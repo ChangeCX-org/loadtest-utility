@@ -1,0 +1,32 @@
+{
+    "perf_config": [{
+        "name": "shoppingCart",        
+        "description": "Shopping Cart related Configuration",
+        "requestParams": [
+            {
+                "name": "quantity",
+                "value": "1"
+            },
+            {
+                "name": "colorsFront",
+                "value": "0"
+            },
+            {
+                "name": "colorsBack",
+                "value": "0"
+            },
+            {
+                "name": "whiteInFront",
+                "value": "0"
+            },
+            {
+                "name": "whiteInBack",
+                "value": "0"
+            },
+            {
+                "name": "blackInFront",
+                "value":"False"
+            }
+        ]
+        }]
+}
