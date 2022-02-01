@@ -35,5 +35,5 @@ This class is a sub class of FastHttpUser which accelarates the load of workers 
 
 ## To Invoke the load test script locally use this steps
 ### Install locust on local 
-<code> pip install locust</code>
+<code> pip install locust</code> <br>
 <code>locust -f locustfile.py --host https://qa.testenvelopes.com </code>
