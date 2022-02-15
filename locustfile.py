@@ -1,13 +1,15 @@
 import json
 import random
+from re import search
 from locust import HttpLocust, TaskSet, task,FastHttpUser
 from locust import events
 #This class loads a JSON file named "performance_config_data.json" and stores it in a variable named performance_data_config
 
 class LoadConfig:
-    #Define a variable named foldersConfig and envelopesConfi
+    #Define a variable named foldersConfig and envelopesConfig
     foldersConfig = {}
     envelopesConfig = {}
+
     #Load the folders config by reading a json file named folders_rewrites.json and store it in the variable foldersConfig
     def load_folders_config(self):
         #Load the folders config by reading a json file named folders_rewrites.json and store it in the variable foldersConfig
@@ -177,7 +179,21 @@ class LocustTasks(TaskSet):
         #results = self.user.client.get("/6-3-4-envelopes")
         events.request.fire(request_type="GET", name="Product Page", response_code=200,response_time=6000,response_length=len(results.content) if results.content else 0,exception=None,context=self.user)
 
+    @task(4)
+    def search(self):        
+        #Get a random search term from the get_envelope_product() method in load_config
+        random_search_term = random.choice(list(self.load_config.get_envelopes_config_product()))        
+        if(self.isFolders):
+            random_search_term = random.choice(list(self.load_config.get_folders_config_product()))
 
+        if(random_search_term):
+            #Replace the / and - with spaces in random_search_term
+            random_search_term = random_search_term.replace("/"," ").replace("-"," ")
+            #Replace spaces with + in random_search_term
+            random_search_term = random_search_term.replace(" ","+")
+    
+        results = self.client.get("/search?w="+random_search_term)
+        events.request.fire(request_type="GET", name="Search", response_code=200,response_time=6000,response_length=len(results.content) if results.content else 0,exception=None,context=self.user)
 # Create a HttpUser Class that calls the LocustTasks 
 class WebsiteUser(FastHttpUser):
     #Add a header to the request with key as LoadTestUser and value as LoadTestUser!!@@2022
